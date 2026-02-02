@@ -1,72 +1,92 @@
-# EcoDrive - Catálogo Federado
+# EcoDrive TermSpace - Federated Catalog
 
-Aplicación web desarrollada con Next.js para visualizar y gestionar el catálogo federado de conectores EcoDrive.
+Web application built with Next.js to visualize and manage the EcoDrive TermSpace federated catalog of automotive terminology resources.
 
-## 🚀 Características
+## 🚀 Features
 
-- **Catálogo Federado**: Visualización de todos los recursos disponibles en el ecosistema EcoDrive
-- **Búsqueda y Filtrado**: Búsqueda por nombre/descripción y filtrado por vocabularios
-- **Vista Detallada**: Información completa de cada recurso del catálogo
-- **Formulario de Contacto**: Solicitud de acceso a recursos específicos
-- **Diseño Responsive**: Interfaz adaptada a todos los dispositivos
-- **Modo Oscuro**: Soporte para tema claro y oscuro
+- **Federated Catalog**: Display of all resources available in the EcoDrive ecosystem
+- **Search & Filtering**: Search by name/description and filter by vocabularies
+- **Detailed View**: Complete information for each catalog resource
+- **Contact Form**: Request access to specific resources
+- **Responsive Design**: Interface adapted to all devices
+- **Dark Mode**: Support for light and dark themes
+- **Docker Support**: Production-ready containerization
+- **AWS ECR/ECS Ready**: Automated deployment to AWS
 
-## 🛠️ Tecnologías
+## 🛠️ Technologies
 
-- **Next.js 14**: Framework de React con App Router
-- **TypeScript**: Tipado estático para mayor seguridad
-- **Tailwind CSS**: Framework de estilos utility-first
-- **React Icons**: Biblioteca de iconos
-- **Axios**: Cliente HTTP para llamadas a la API
+- **Next.js 14**: React framework with App Router
+- **TypeScript**: Static typing for better safety
+- **Tailwind CSS**: Utility-first CSS framework
+- **React Icons**: Icon library
+- **Axios**: HTTP client for API calls
+- **Docker**: Container platform for deployment
 
-## 📋 Requisitos Previos
+## 📋 Prerequisites
 
-- Node.js 18.x o superior
-- npm o yarn
+- Node.js 18.x or higher
+- npm or yarn
+- Docker (optional, for containerization)
+- AWS CLI (optional, for deployment to AWS)
 
-## 🔧 Instalación
+## 🔧 Installation
 
-1. Instalar dependencias:
+### Local Development
+
+1. Install dependencies:
 
 ```bash
 npm install
-# o
+# or
 yarn install
 ```
 
-2. Configurar variables de entorno:
+2. Configure environment variables:
 
-El archivo `.env.local` ya está configurado con el endpoint del catálogo:
+The `.env.local` file is already configured with the catalog endpoint:
 
 ```
 CATALOG_API_URL=http://ecodrive.pangeanic.com:19195
 ```
 
-## 🚀 Ejecución
+## 🚀 Running the Application
 
-### Modo Desarrollo
+### Development Mode
 
 ```bash
 npm run dev
-# o
+# or
 yarn dev
 ```
 
-La aplicación estará disponible en [http://localhost:3000](http://localhost:3000)
+Application will be available at [http://localhost:3000](http://localhost:3000)
 
-### Modo Producción
+### Production Mode
 
 ```bash
-# Compilar
+# Build
 npm run build
-# o
+# or
 yarn build
 
-# Ejecutar
+# Run
 npm start
-# o
+# or
 yarn start
 ```
+
+### Docker Mode
+
+```bash
+# Build and run with Docker Compose
+docker-compose up
+
+# Or build manually
+docker build -t ecodrive-catalog:latest .
+docker run -p 3000:3000 ecodrive-catalog:latest
+```
+
+See [DOCKER_README.md](./DOCKER_README.md) for detailed Docker instructions.
 
 ## 📁 Estructura del Proyecto
 
@@ -164,20 +184,46 @@ Para cambiar el endpoint del catálogo, modifica el archivo `.env.local`:
 CATALOG_API_URL=tu_endpoint_aqui
 ```
 
-## 📝 Próximas Mejoras
+## 🐳 Docker & AWS Deployment
 
-- [ ] Paginación del catálogo
-- [ ] Ordenamiento de resultados
-- [ ] Filtros avanzados
-- [ ] Exportación de datos
-- [ ] Autenticación de usuarios
-- [ ] Panel de administración
-- [ ] Integración con APIs de management
+### Quick Deploy to AWS ECR
 
-## 📄 Licencia
+```bash
+# Make scripts executable
+chmod +x scripts/*.sh
 
-Este proyecto es parte del ecosistema EcoDrive.
+# Build and push to AWS ECR
+./scripts/push-to-ecr.sh us-east-1 ecodrive-catalog latest
 
-## 👥 Contacto
+# Deploy to ECS (if configured)
+./scripts/deploy-ecs.sh us-east-1 ecodrive-cluster ecodrive-catalog-service
+```
 
-Para más información, visita la página de contacto en la aplicación o contacta con el equipo de EcoDrive.
+### Documentation
+
+- **[DOCKER_README.md](./DOCKER_README.md)** - Complete Docker guide
+- **[AWS_DEPLOYMENT.md](./AWS_DEPLOYMENT.md)** - AWS ECR/ECS deployment guide
+- **[INSTRUCCIONES.md](./INSTRUCCIONES.md)** - Spanish installation guide
+
+## 📝 Future Enhancements
+
+- [ ] Catalog pagination
+- [ ] Results sorting
+- [ ] Advanced filters
+- [ ] Data export
+- [ ] User authentication
+- [ ] Admin panel
+- [ ] Management API integration
+
+## 📄 License
+
+This project is part of the EcoDrive TermSpace ecosystem.
+
+## 👥 Contact
+
+For more information, visit the contact page in the application or contact the EcoDrive TermSpace team.
+
+**Project Partners:**
+
+- Pangeanic
+- Universitat Jaume I de Castellón

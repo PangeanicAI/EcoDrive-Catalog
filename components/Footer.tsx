@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
 
 export default function Footer() {
@@ -83,6 +84,48 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Partners Logos */}
+        <div className="border-t border-gray-800 mt-8 pt-8">
+          <h3 className="text-center text-lg font-semibold mb-6 text-gray-400">
+            Project Partners
+          </h3>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            {/* Pangeanic Logo */}
+            <div className="flex items-center justify-center">
+              <Image
+                src="/logos/Logo Pangeanic Alta.webp"
+                alt="Pangeanic"
+                width={180}
+                height={60}
+                className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
+              />
+            </div>
+
+            {/* UJI Logo */}
+            <div className="flex items-center justify-center">
+              <Image
+                src="/logos/marca-uji-color-fons-transparent.png"
+                alt="Universitat Jaume I"
+                width={180}
+                height={60}
+                className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
+              />
+            </div>
+
+            {/* Valgrai Logo */}
+            <div className="flex items-center justify-center">
+              <Image
+                src="/logos/valgrai-logo.svg"
+                alt="Valgrai"
+                width={180}
+                height={60}
+                className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
           <p>
             &copy; {new Date().getFullYear()} EcoDrive TermSpace. All rights

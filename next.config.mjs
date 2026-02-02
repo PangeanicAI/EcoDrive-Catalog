@@ -5,6 +5,8 @@ const nextConfig = {
     CATALOG_API_URL:
       process.env.CATALOG_API_URL || "http://ecodrive.pangeanic.com:19195",
   },
+  // Enable standalone output for Docker
+  output: "standalone",
 };
 
 export default nextConfig;

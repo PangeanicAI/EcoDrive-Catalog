@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  ecodrive-catalog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecodrive-catalog
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - CATALOG_API_URL=http://ecodrive.pangeanic.com:19195
+    restart: unless-stopped
+    networks:
+      - ecodrive-network
+
+networks:
+  ecodrive-network:
+    driver: bridge
