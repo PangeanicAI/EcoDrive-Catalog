@@ -22,7 +22,7 @@ export default function ContactForm({
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({
       ...formData,
@@ -91,7 +91,7 @@ export default function ContactForm({
                 Request submitted!
               </h3>
               <p className="text-gray-600 dark:text-gray-400">
-                We'll get back to you soon.
+                We will get back to you soon.
               </p>
             </div>
           ) : (

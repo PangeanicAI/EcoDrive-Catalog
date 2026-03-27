@@ -75,9 +75,9 @@ export default function CatalogDetailPage() {
           {item.name || item.id}
         </h1>
         {item.description && (
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
-            {item.description}
-          </p>
+          <div className="text-lg text-gray-600 dark:text-gray-300 mb-6">
+            <span dangerouslySetInnerHTML={{ __html: item.description }} />
+          </div>
         )}
 
         {/* Metadata */}
@@ -125,11 +125,9 @@ export default function CatalogDetailPage() {
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
                   {key}
                 </p>
-                <p className="text-gray-900 dark:text-white break-words">
-                  {typeof value === "object"
-                    ? JSON.stringify(value, null, 2)
-                    : String(value)}
-                </p>
+                <div className="text-gray-900 dark:text-white break-words">
+                  <span dangerouslySetInnerHTML={{ __html: value }} />
+                </div>
               </div>
             ))}
           </div>

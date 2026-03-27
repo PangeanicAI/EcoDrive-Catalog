@@ -46,7 +46,7 @@ yarn install
 The `.env.local` file is already configured with the catalog endpoint:
 
 ```
-CATALOG_API_URL=http://ecodrive.pangeanic.com:19195
+CATALOG_API_URL=http://ecodrive.pangeanic.com:19193
 ```
 
 ## 🚀 Running the Application
@@ -141,47 +141,64 @@ EcoDrive-Catalogo/
 
 ## 🔌 API
 
-La aplicación consume el endpoint del catálogo federado:
+The application consumes the federated catalog endpoint:
 
 ```
-GET http://ecodrive.pangeanic.com:19195/federatedcatalog
+POST http://ecodrive.pangeanic.com:19193/management/federatedcatalog/request
 ```
 
-### Formato de Datos
+### Request Body
 
-La aplicación está preparada para procesar diferentes formatos de respuesta del catálogo EDC:
+```json
+{
+  "offset": 0,
+  "limit": 100,
+  "@context": {
+    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+  }
+}
+```
 
-- Arrays directos
-- Objetos con `dcat:dataset`
-- Objetos con `@graph`
-- Objetos individuales
+### Data Format
 
-### Datos de Demostración
+The application is prepared to process different EDC catalog response formats:
 
-Si el endpoint no está disponible, la aplicación muestra datos de demostración para facilitar el desarrollo y testing.
+- Direct arrays of catalogs with nested datasets
+- Objects with `dcat:dataset` arrays
+- Objects with `@graph` structure
+- Individual catalog objects
 
-## 🎨 Personalización
+The response typically contains an array of catalogs, where each catalog has:
+- A `http://www.w3.org/ns/dcat#dataset` array containing the actual resources
+- Service information under `http://www.w3.org/ns/dcat#service`
+- Participant identification
 
-### Colores
+### Demo Data
 
-Los colores principales se pueden modificar en `tailwind.config.ts`:
+If the endpoint is not available, the application displays demo data to facilitate development and testing.
+
+## 🎨 Customization
+
+### Colors
+
+Main colors can be modified in `tailwind.config.ts`:
 
 ```typescript
 colors: {
   primary: {
     50: '#f0fdf4',
-    // ... más tonos
+    // ... more shades
     900: '#14532d',
   },
 }
 ```
 
-### Endpoint de la API
+### API Endpoint
 
-Para cambiar el endpoint del catálogo, modifica el archivo `.env.local`:
+To change the catalog endpoint, modify the `.env.local` file:
 
 ```
-CATALOG_API_URL=tu_endpoint_aqui
+CATALOG_API_URL=your_endpoint_here
 ```
 
 ## 🐳 Docker & AWS Deployment

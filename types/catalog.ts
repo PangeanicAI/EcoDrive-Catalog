@@ -6,4 +6,5 @@ export interface CatalogItem {
   properties?: Record<string, any>;
   vocabulary?: string[];
   createdAt?: string;
+  participantId?: string;
 }

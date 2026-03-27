@@ -18,9 +18,9 @@ export default function CatalogCard({ item }: CatalogCardProps) {
         </div>
 
         {item.description && (
-          <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-            {item.description}
-          </p>
+          <div className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+            <span dangerouslySetInnerHTML={{ __html: item.description }} />
+          </div>
         )}
 
         <div className="flex flex-wrap gap-2 mb-4">

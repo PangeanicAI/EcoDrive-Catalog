@@ -2,19 +2,49 @@ import axios from "axios";
 import { CatalogItem } from "@/types/catalog";
 
 const CATALOG_API_URL =
-  process.env.CATALOG_API_URL || "http://ecodrive.pangeanic.com:19195";
+  process.env.CATALOG_API_URL || "http://ecodrive.pangeanic.com:19193";
 
 export async function fetchCatalog(): Promise<CatalogItem[]> {
   try {
-    const response = await axios.get(`${CATALOG_API_URL}/federatedcatalog`);
+    const response = await axios.post(
+      `${CATALOG_API_URL}/management/federatedcatalog/request`,
+      {
+        offset: 0,
+        limit: 100,
+        "@context": {
+          "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        timeout: 10000,
+      }
+    );
 
     // Process federated catalog response
-    // Structure may vary, here we adapt according to EDC format
+    // Response is an array of catalogs, each containing datasets
     const data = response.data;
 
-    // If response is a direct array
+    // If response is a direct array of catalogs
     if (Array.isArray(data)) {
-      return data.map(transformCatalogItem);
+      // Extract all datasets from all catalogs
+      const allDatasets: any[] = [];
+      
+      data.forEach((catalog: any) => {
+        // Get datasets from catalog
+        const datasets = catalog["http://www.w3.org/ns/dcat#dataset"] || 
+                        catalog["dcat:dataset"] || 
+                        [];
+        
+        if (Array.isArray(datasets)) {
+          allDatasets.push(...datasets);
+        }
+      });
+      
+      return allDatasets.map(transformCatalogItem);
     }
 
     // If response has a nested structure
@@ -44,13 +74,13 @@ export async function fetchCatalog(): Promise<CatalogItem[]> {
 function transformCatalogItem(item: any): CatalogItem {
   return {
     id: item["@id"] || item.id || item["edc:id"] || generateId(),
-    name: item["dct:title"] || item.name || item.title || "Untitled",
-    description: item["dct:description"] || item.description || "",
-    type: item["@type"] || item.type || "Asset",
+    name: item.name || item["dct:title"] || item.title || item["http://www.w3.org/ns/dcat#keyword"] || "Untitled",
+    description: item["http://purl.org/dc/terms/description"] || item["dct:description"] || item.description || item.shortDescription || "",
+    type: item["@type"] || item.type || item.assetType || "Asset",
     properties: extractProperties(item),
     vocabulary: extractVocabularies(item),
-    createdAt:
-      item["dct:created"] || item.createdAt || new Date().toISOString(),
+    createdAt: item["dct:created"] || item.createdAt || new Date().toISOString(),
+    participantId: item.participantId || "",
   };
 }
 
@@ -66,11 +96,19 @@ function extractProperties(item: any): Record<string, any> {
     "title",
     "description",
     "@context",
+    "http://www.w3.org/ns/dcat#distribution",
+    "odrl:hasPolicy",
   ];
 
   for (const [key, value] of Object.entries(item)) {
     if (!excludedKeys.includes(key)) {
-      properties[key] = value;
+      // Simplify property names for better display
+      let displayKey = key;
+      if (key.startsWith("http://")) {
+        const parts = key.split("/");
+        displayKey = parts[parts.length - 1] || key;
+      }
+      properties[displayKey] = value;
     }
   }
 
@@ -89,6 +127,15 @@ function extractVocabularies(item: any): string[] {
     }
   }
 
+  if (item["http://www.w3.org/ns/dcat#keyword"]) {
+    const keyword = item["http://www.w3.org/ns/dcat#keyword"];
+    if (Array.isArray(keyword)) {
+      vocabularies.push(...keyword);
+    } else {
+      vocabularies.push(keyword);
+    }
+  }
+
   if (item.keywords && Array.isArray(item.keywords)) {
     vocabularies.push(...item.keywords);
   }
@@ -97,15 +144,26 @@ function extractVocabularies(item: any): string[] {
     vocabularies.push(...item.vocabulary);
   }
 
+  // Add asset type as vocabulary
+  if (item.assetType) {
+    vocabularies.push(item.assetType);
+  }
+
+  // Add participant ID as vocabulary
+  if (item.participantId) {
+    vocabularies.push(item.participantId);
+  }
+
   // If no vocabularies, infer from type
   if (vocabularies.length === 0 && item["@type"]) {
     const type = Array.isArray(item["@type"])
       ? item["@type"][0]
       : item["@type"];
-    vocabularies.push(type.split(":").pop() || "Unknown");
+    const typeName = type.split("/").pop()?.split("#").pop() || "Unknown";
+    vocabularies.push(typeName);
   }
 
-  return [...new Set(vocabularies)]; // Remove duplicates
+  return Array.from(new Set(vocabularies)) as string[]; // Remove duplicates
 }
 
 function generateId(): string {

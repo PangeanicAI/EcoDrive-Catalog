@@ -13,7 +13,7 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({
       ...formData,
@@ -40,7 +40,7 @@ export default function ContactPage() {
           Contact Us
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Have questions or need more information? We're here to help
+          Have questions or need more information? We are here to help
         </p>
       </section>
 
@@ -59,13 +59,13 @@ export default function ContactPage() {
                   Email
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  info@ecodrive-termspace.com
+                  support@pangeanic.com
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+          {/* <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="flex items-start mb-4">
               <div className="flex-shrink-0">
                 <div className="flex items-center justify-center w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg">
@@ -81,7 +81,7 @@ export default function ContactPage() {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="flex items-start mb-4">
@@ -95,7 +95,7 @@ export default function ContactPage() {
                   Location
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Castellón, Spain
+                  Av. de les Corts Valencianes 26, Valencia, Spain
                 </p>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
             {submitted && (
               <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
                 <p className="text-green-800 dark:text-green-200">
-                  Message sent successfully! We'll get back to you soon.
+                  Message sent successfully! We will get back to you soon.
                 </p>
               </div>
             )}
