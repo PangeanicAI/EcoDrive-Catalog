@@ -34,10 +34,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    filterItems();
-  }, [searchTerm, selectedVocabulary, catalogItems]);
-
-  const filterItems = () => {
     let filtered = catalogItems;
 
     if (searchTerm) {
@@ -56,7 +52,7 @@ export default function Home() {
     }
 
     setFilteredItems(filtered);
-  };
+  }, [searchTerm, selectedVocabulary, catalogItems]);
 
   const vocabularies = Array.from(
     new Set(catalogItems.flatMap((item) => item.vocabulary || []))

@@ -15,21 +15,21 @@ export default function CatalogDetailPage() {
   const [showContactForm, setShowContactForm] = useState(false);
 
   useEffect(() => {
+    const loadCatalogItem = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchCatalog();
+        const foundItem = data.find((i: CatalogItem) => i.id === params.id);
+        setItem(foundItem || null);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     loadCatalogItem();
   }, [params.id]);
-
-  const loadCatalogItem = async () => {
-    try {
-      setLoading(true);
-      const data = await fetchCatalog();
-      const foundItem = data.find((i: CatalogItem) => i.id === params.id);
-      setItem(foundItem || null);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   if (loading) {
     return (
