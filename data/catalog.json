@@ -1,0 +1,48 @@
+[
+  {
+    "id": "termbase-electric-vehicles",
+    "name": "Electric Vehicle Terminology Database",
+    "description": "Comprehensive multilingual terminology database for electric vehicle components, systems, and technologies.",
+    "type": "Terminology Database",
+    "properties": {
+      "format": "TBX, JSON-LD",
+      "languages": "EN, ES, DE, FR, IT",
+      "entries": "15,000+ terms",
+      "license": "Open Access"
+    },
+    "vocabulary": [
+      "Electric Vehicles",
+      "Automotive",
+      "Electrification"
+    ],
+    "createdAt": "2024-01-15T10:00:00Z",
+    "download": {
+      "objectKey": "catalog/termbase-electric-vehicles.zip",
+      "fileName": "termbase-electric-vehicles.zip",
+      "label": "Download termbase"
+    }
+  },
+  {
+    "id": "corpus-adas-documentation",
+    "name": "ADAS Technical Documentation Corpus",
+    "description": "Annotated corpus for Advanced Driver Assistance Systems technical documentation.",
+    "type": "Text Corpus",
+    "properties": {
+      "format": "XML, Plain Text",
+      "size": "250 MB",
+      "documents": "5,000+ technical documents",
+      "updateFrequency": "Quarterly"
+    },
+    "vocabulary": [
+      "ADAS",
+      "Autonomous Driving",
+      "Safety Systems"
+    ],
+    "createdAt": "2024-02-20T14:30:00Z",
+    "download": {
+      "objectKey": "catalog/corpus-adas-documentation.zip",
+      "fileName": "corpus-adas-documentation.zip",
+      "label": "Download corpus"
+    }
+  }
+]

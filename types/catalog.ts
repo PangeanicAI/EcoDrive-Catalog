@@ -7,4 +7,10 @@ export interface CatalogItem {
   vocabulary?: string[];
   createdAt?: string;
   participantId?: string;
+  source?: "static" | "connector";
+  download?: {
+    objectKey: string;
+    fileName?: string;
+    label?: string;
+  };
 }

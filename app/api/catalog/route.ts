@@ -1,36 +1,31 @@
 import { NextResponse } from "next/server";
-import axios from "axios";
+import { getStaticCatalog } from "@/lib/server/catalog";
+import { getConnectorCatalog } from "@/lib/server/connectorCatalog";
 
-const CATALOG_API_URL =
-  process.env.CATALOG_API_URL || "http://ecodrive.pangeanic.com:19193";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-  try {
-    const response = await axios.post(
-      `${CATALOG_API_URL}/management/federatedcatalog/request`,
-      {
-        offset: 0,
-        limit: 100,
-        "@context": {
-          "@vocab": "https://w3id.org/edc/v0.0.1/ns/",
-        },
-      },
-      {
-        timeout: 10000,
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-      }
-    );
+  const [staticCatalog, connectorCatalog] = await Promise.all([
+    getStaticCatalog().catch((error) => {
+      console.error("Error reading static catalog:", error);
+      return [];
+    }),
+    getConnectorCatalog().catch((error) => {
+      console.error("Error reading connector catalog:", error);
+      return [];
+    }),
+  ]);
 
-    return NextResponse.json(response.data);
-  } catch (error) {
-    console.error("Error fetching catalog from API:", error);
-
+  if (staticCatalog.length === 0 && connectorCatalog.length === 0) {
     return NextResponse.json(
-      { error: "Error fetching catalog" },
+      { error: "Error loading static and connector catalog data" },
       { status: 500 },
     );
   }
+
+  console.info(
+    `[catalog] merged static=${staticCatalog.length} connector=${connectorCatalog.length}`,
+  );
+
+  return NextResponse.json([...staticCatalog, ...connectorCatalog]);
 }

@@ -3,7 +3,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { FiArrowLeft, FiCalendar, FiTag, FiDatabase } from "react-icons/fi";
+import {
+  FiArrowLeft,
+  FiCalendar,
+  FiTag,
+  FiDatabase,
+  FiDownload,
+} from "react-icons/fi";
 import ContactForm from "@/components/ContactForm";
 import { fetchCatalog } from "@/lib/api";
 import { CatalogItem } from "@/types/catalog";
@@ -100,13 +106,29 @@ export default function CatalogDetailPage() {
           )}
         </div>
 
-        {/* Action Button */}
-        <button
-          onClick={() => setShowContactForm(true)}
-          className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition font-medium"
-        >
-          Request access to this resource
-        </button>
+        {/* Action Buttons */}
+        <div className="flex flex-wrap gap-3">
+          {item.download?.objectKey && (
+            <a
+              href={`/api/catalog/${item.id}/download`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition font-medium"
+            >
+              <FiDownload className="mr-2" />
+              {item.source === "static"
+                ? "download sample"
+                : item.download.label || "Download file"}
+            </a>
+          )}
+
+          <button
+            onClick={() => setShowContactForm(true)}
+            className="bg-gray-100 text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-200 transition font-medium dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+          >
+            Request access to this resource
+          </button>
+        </div>
       </div>
 
       {/* Properties */}

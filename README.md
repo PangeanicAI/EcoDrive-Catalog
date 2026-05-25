@@ -7,6 +7,8 @@ Web application built with Next.js to visualize and manage the EcoDrive TermSpac
 - **Federated Catalog**: Display of all resources available in the EcoDrive ecosystem
 - **Search & Filtering**: Search by name/description and filter by vocabularies
 - **Detailed View**: Complete information for each catalog resource
+- **Static Catalog Source**: Data loaded from `data/catalog.json`
+- **MinIO Downloads**: Secure file downloads using signed URLs
 - **Contact Form**: Request access to specific resources
 - **Responsive Design**: Interface adapted to all devices
 - **Dark Mode**: Support for light and dark themes
@@ -43,10 +45,13 @@ yarn install
 
 2. Configure environment variables:
 
-The `.env.local` file is already configured with the catalog endpoint:
+Configure `.env.local` with MinIO credentials:
 
 ```
-CATALOG_API_URL=http://ecodrive.pangeanic.com:19193
+MINIO_ENDPOINT=http://ecodrive.pangeanic.com:9000
+MINIO_ACCESS_KEY=your_access_key
+MINIO_SECRET_KEY=your_secret_key
+MINIO_BUCKET=ecodrive-catalog
 ```
 
 ## 🚀 Running the Application
@@ -141,41 +146,33 @@ EcoDrive-Catalogo/
 
 ## 🔌 API
 
-The application consumes the federated catalog endpoint:
+The application reads catalog data from a static file:
 
 ```
-POST http://ecodrive.pangeanic.com:19193/management/federatedcatalog/request
+data/catalog.json
 ```
 
-### Request Body
+To add new resources, append objects with the same structure in that file.
+
+### Download Endpoint
+
+Each item can define a downloadable object:
 
 ```json
-{
-  "offset": 0,
-  "limit": 100,
-  "@context": {
-    "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
-  }
+"download": {
+  "objectKey": "catalog/my-resource.zip",
+  "fileName": "my-resource.zip",
+  "label": "Download resource"
 }
 ```
 
-### Data Format
+The detail page button calls:
 
-The application is prepared to process different EDC catalog response formats:
+```
+GET /api/catalog/:id/download
+```
 
-- Direct arrays of catalogs with nested datasets
-- Objects with `dcat:dataset` arrays
-- Objects with `@graph` structure
-- Individual catalog objects
-
-The response typically contains an array of catalogs, where each catalog has:
-- A `http://www.w3.org/ns/dcat#dataset` array containing the actual resources
-- Service information under `http://www.w3.org/ns/dcat#service`
-- Participant identification
-
-### Demo Data
-
-If the endpoint is not available, the application displays demo data to facilitate development and testing.
+and the backend generates a signed MinIO URL with your `.env.local` configuration.
 
 ## 🎨 Customization
 
@@ -193,13 +190,9 @@ colors: {
 }
 ```
 
-### API Endpoint
+### Static Catalog
 
-To change the catalog endpoint, modify the `.env.local` file:
-
-```
-CATALOG_API_URL=your_endpoint_here
-```
+Edit `data/catalog.json` to populate your full catalog.
 
 ## 🐳 Docker & AWS Deployment
 
