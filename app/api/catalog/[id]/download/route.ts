@@ -1,32 +1,43 @@
 import { NextResponse } from "next/server";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, HeadObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { getCatalogItemById } from "@/lib/server/catalog";
 
-const MINIO_ENDPOINT = process.env.MINIO_ENDPOINT;
-const MINIO_ACCESS_KEY = process.env.MINIO_ACCESS_KEY;
-const MINIO_SECRET_KEY = process.env.MINIO_SECRET_KEY;
-const MINIO_BUCKET = process.env.MINIO_BUCKET;
+type MinioConfig = {
+  endpoint: string;
+  accessKey: string;
+  secretKey: string;
+  bucket: string;
+};
 
-function getMinioClient() {
+function getMinioConfig(): MinioConfig {
+  const endpoint = process.env.MINIO_ENDPOINT;
+  const accessKey = process.env.MINIO_ACCESS_KEY;
+  const secretKey = process.env.MINIO_SECRET_KEY;
+  const bucket = process.env.MINIO_BUCKET;
+
   if (
-    !MINIO_ENDPOINT ||
-    !MINIO_ACCESS_KEY ||
-    !MINIO_SECRET_KEY ||
-    !MINIO_BUCKET
+    !endpoint ||
+    !accessKey ||
+    !secretKey ||
+    !bucket
   ) {
     throw new Error("Missing MinIO environment variables");
   }
 
-  const endpoint = new URL(MINIO_ENDPOINT);
+  return { endpoint, accessKey, secretKey, bucket };
+}
+
+function getMinioClient(config: MinioConfig) {
+  const endpoint = new URL(config.endpoint);
 
   return new S3Client({
     region: "us-east-1",
-    endpoint: MINIO_ENDPOINT,
+    endpoint: config.endpoint,
     forcePathStyle: true,
     credentials: {
-      accessKeyId: MINIO_ACCESS_KEY,
-      secretAccessKey: MINIO_SECRET_KEY,
+      accessKeyId: config.accessKey,
+      secretAccessKey: config.secretKey,
     },
     tls: endpoint.protocol === "https:",
   });
@@ -46,11 +57,34 @@ export async function GET(
       );
     }
 
-    const minioClient = getMinioClient();
+    const minioConfig = getMinioConfig();
+    const minioClient = getMinioClient(minioConfig);
+    const objectKey = catalogItem.download.objectKey;
+
+    try {
+      await minioClient.send(
+        new HeadObjectCommand({
+          Bucket: minioConfig.bucket,
+          Key: objectKey,
+        }),
+      );
+    } catch (error: any) {
+      const errorCode = error?.name || error?.Code;
+      if (errorCode === "NotFound" || errorCode === "NoSuchKey") {
+        return NextResponse.json(
+          {
+            error:
+              "Download file not found in storage. Please contact support to update this resource.",
+          },
+          { status: 404 },
+        );
+      }
+      throw error;
+    }
 
     const command = new GetObjectCommand({
-      Bucket: MINIO_BUCKET,
-      Key: catalogItem.download.objectKey,
+      Bucket: minioConfig.bucket,
+      Key: objectKey,
       ResponseContentDisposition: `attachment; filename="${catalogItem.download.fileName || `${catalogItem.id}.bin`}"`,
     });
 
