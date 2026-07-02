@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FiGithub, FiLinkedin, FiTwitter } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiTwitter, FiGlobe } from "react-icons/fi";
 
 export default function Footer() {
   return (
@@ -60,21 +60,21 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.pangeanic.com"
                 className="text-gray-400 hover:text-primary-400 transition"
-                aria-label="Twitter"
+                aria-label="Website"
               >
-                <FiTwitter size={24} />
+                <FiGlobe size={24} />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/pangeanic"
                 className="text-gray-400 hover:text-primary-400 transition"
                 aria-label="LinkedIn"
               >
                 <FiLinkedin size={24} />
               </a>
               <a
-                href="#"
+                href="https://github.com/PangeanicAI"
                 className="text-gray-400 hover:text-primary-400 transition"
                 aria-label="GitHub"
               >
