@@ -92,35 +92,53 @@ export default function Footer() {
           <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
             {/* Pangeanic Logo */}
             <div className="flex items-center justify-center">
-              <Image
-                src="/logos/Logo Pangeanic Alta.webp"
-                alt="Pangeanic"
-                width={180}
-                height={60}
-                className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
-              />
+              <a
+                href="https://www.pangeanic.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/logos/Logo Pangeanic Alta.webp"
+                  alt="Pangeanic"
+                  width={180}
+                  height={60}
+                  className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
+                />
+              </a>
             </div>
 
             {/* UJI Logo */}
             <div className="flex items-center justify-center">
-              <Image
-                src="/logos/marca-uji-color-fons-transparent.png"
-                alt="Universitat Jaume I"
-                width={180}
-                height={60}
-                className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
-              />
+              <a
+                href="https://www.uji.es/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/logos/marca-uji-color-fons-transparent.png"
+                  alt="Universitat Jaume I"
+                  width={180}
+                  height={60}
+                  className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
+                />
+              </a>
             </div>
 
             {/* Valgrai Logo */}
             <div className="flex items-center justify-center">
-              <Image
-                src="/logos/valgrai-logo.svg"
-                alt="Valgrai"
-                width={180}
-                height={60}
-                className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
-              />
+              <a
+                href="https://valgrai.eu/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/logos/valgrai-logo.svg"
+                  alt="Valgrai"
+                  width={180}
+                  height={60}
+                  className="h-12 w-auto object-contain brightness-0 invert opacity-80 hover:opacity-100 transition"
+                />
+              </a>
             </div>
           </div>
         </div>
